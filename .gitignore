@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+venv/
+emotion_embedding_model/
+embeddings.pkl
+wiki_movie_plots_deduped.csv
+
 # Distribution / packaging
 .Python
 build/

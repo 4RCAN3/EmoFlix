@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoFlix - Emotional Movie Recommender</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <span class="logo-text">EmoFlix</span>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#recommendations"><i class="fas fa-heart"></i> Recommendations</a></li>
+                    <li><a href="#emotion-form"><i class="fas fa-smile"></i> Your Emotions</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Find Movies That Transform Your Emotions</h1>
+                <p>Our AI-powered recommender suggests films that help you transition from how you feel now to how you want to feel.</p>
+                <a href="#emotion-form" class="cta-button">Get Recommendations</a>
+            </div>
+            <video autoplay muted loop class="hero-video">
+                <source src="https://example.com/demo.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+        </section>
+
+        <!-- Emotion Form -->
+        <section id="emotion-form" class="emotion-form">
+            <div class="form-container">
+                <h2>How are you feeling?</h2>
+                <form id="recommendation-form">
+                    <div class="form-group">
+                        <label for="current-emotion">Current Emotional State:</label>
+                        <textarea id="current-emotion" placeholder="Describe how you're feeling right now..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="desired-emotion">Desired Emotional State:</label>
+                        <textarea id="desired-emotion" placeholder="Describe how you want to feel..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="movie-count">Number of recommendations:</label>
+                        <input type="number" id="movie-count" min="1" max="10" value="5">
+                    </div>
+                    <button type="submit" class="submit-button">Get Movie Recommendations</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Loading Animation -->
+        <div id="loading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Finding perfect movies for your emotional journey...</p>
+        </div>
+
+        <!-- Recommendations Section -->
+        <section id="recommendations" class="movie-recommendations hidden">
+            <h2>Your Personalized Recommendations</h2>
+            <div class="recommendation-container" id="recommendation-results">
+                <!-- Recommendations will be loaded here dynamically -->
+            </div>
+        </section>
+
+        <!-- Popular Movies Section -->
+        <section class="movie-section">
+            <h2>Browse Popular Movies</h2>
+            <div class="movie-carousel">
+                <div class="carousel-container">
+                    <div class="movie-grid">
+                        {% for movie in movies %}
+                        <div class="movie-card">
+                            <div class="movie-poster">
+                                {% if movie.poster_path %}
+                                <img src="{{ movie.poster_path }}" alt="{{ movie.title }}">
+                                {% else %}
+                                <div class="no-poster">
+                                    <i class="fas fa-film"></i>
+                                    <span>No Poster Available</span>
+                                </div>
+                                {% endif %}
+                                <div class="hover-details">
+                                    <h3>{{ movie.title }}</h3>
+                                    {% if movie.release_date %}
+                                    <p class="year">{{ movie.release_date[:4] }}</p>
+                                    {% endif %}
+                                    <div class="movie-meta">
+                                        {% if movie.runtime %}
+                                        <span><i class="fas fa-clock"></i> {{ movie.runtime }} min</span>
+                                        {% endif %}
+                                        {% if movie.vote_average %}
+                                        <span><i class="fas fa-star"></i> {{ movie.vote_average }}/10</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if movie.genres %}
+                                    <div class="genres">
+                                        {% for genre in movie.genres %}
+                                        <span class="genre-tag">{{ genre.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                    <p class="overview">{{ movie.overview[:150] }}{% if movie.overview|length > 150 %}...{% endif %}</p>
+                                    <button class="details-button" data-title="{{ movie.title }}" 
+                                            data-overview="{{ movie.overview }}" 
+                                            data-poster="{{ movie.poster_path }}"
+                                            data-plot="{{ movie.plot }}"
+                                            data-year="{{ movie.release_date[:4] if movie.release_date else '' }}"
+                                            data-rating="{{ movie.vote_average }}"
+                                            data-runtime="{{ movie.runtime }}"
+                                            data-director="{{ movie.director }}"
+                                            data-genres="{{ movie.genres|tojson }}">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="movie-info">
+                                <h3>{{ movie.title }}</h3>
+                                {% if movie.genres and movie.genres|length > 0 %}
+                                <p>{{ movie.genres[0].name }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Movie Detail Modal -->
+        <div id="movie-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-header">
+                    <div class="modal-poster">
+                        <img id="modal-poster" src="" alt="Movie Poster">
+                    </div>
+                    <div class="modal-info">
+                        <h2 id="modal-title"></h2>
+                        <div class="modal-meta">
+                            <span id="modal-year"></span>
+                            <span id="modal-runtime"></span>
+                            <span id="modal-rating"></span>
+                        </div>
+                        <div id="modal-genres" class="modal-genres"></div>
+                        <p id="modal-director"></p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-container">
+                        <div class="tabs">
+                            <button class="tab-button active" data-tab="overview">Overview</button>
+                            <button class="tab-button" data-tab="plot">Full Plot</button>
+                        </div>
+                        <div class="tab-content">
+                            <div id="overview-tab" class="tab-pane active">
+                                <p id="modal-overview"></p>
+                            </div>
+                            <div id="plot-tab" class="tab-pane">
+                                <p id="modal-plot"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">EmoFlix</span>
+                    <p>Transforming emotions through cinema</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#recommendations">Recommendations</a></li>
+                        <li><a href="#emotion-form">Your Emotions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-about">
+                    <h4>About EmoFlix</h4>
+                    <p>EmoFlix uses advanced AI to recommend movies based on emotional transitions. Our system analyzes your current and desired emotional states to suggest films that can help you on your emotional journey.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 EmoFlix. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
