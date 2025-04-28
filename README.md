@@ -83,11 +83,13 @@ This project is open-source and available under the MIT License.
 
 ## Screenshots
 
-1. Home Page
-   ![Home Page](https://github.com/KrishnaD098/EmoFlix/blob/master/static/screenshots/homePage.jpg)
+## Screenshots
 
-2. Search Interface
-   ![Search Interface](https://github.com/KrishnaD098/EmoFlix/blob/master/static/screenshots/SearchEngine.jpg)
+1. Home Page  
+   ![Home Page](https://raw.githubusercontent.com/KrishnaD098/EmoFlix/features-branch/static/screenshots/homePage.jpg)
 
-3. Recommendations
-   ![Recommendations](https://github.com/KrishnaD098/EmoFlix/blob/master/static/screenshots/FinalPage.jpg)
+2. Search Interface  
+   ![Search Interface](https://raw.githubusercontent.com/KrishnaD098/EmoFlix/features-branch/static/screenshots/SearchEngine.jpg)
+
+3. Recommendations  
+   ![Recommendations](https://raw.githubusercontent.com/KrishnaD098/EmoFlix/features-branch/static/screenshotsFinalPagejpg)
