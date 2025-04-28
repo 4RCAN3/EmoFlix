@@ -92,4 +92,4 @@ This project is open-source and available under the MIT License.
    ![Search Interface](https://raw.githubusercontent.com/KrishnaD098/EmoFlix/features-branch/static/screenshots/SearchEngine.jpg)
 
 3. Recommendations  
-   ![Recommendations](https://raw.githubusercontent.com/KrishnaD098/EmoFlix/features-branch/static/screenshotsFinalPagejpg)
+   ![Recommendations](https://raw.githubusercontent.com/KrishnaD098/EmoFlix/features-branch/static/screenshots/FinalPage.jpg)
