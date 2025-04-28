@@ -120,6 +120,8 @@ def recommend():
     current = data.get('current_emotion')
     desired = data.get('desired_emotion')
     top_n = int(data.get('top_k', 5))
+    # Get weight as a value between 0 and 1 (0 = all current, 1 = all desired)
+    weight = float(data.get('weight', 0.5))
 
     if not current or not desired:
         return jsonify({"error": "Missing 'current_emotion' or 'desired_emotion'"}), 400
@@ -127,7 +129,19 @@ def recommend():
     # Encode emotional states
     vec_A = embedding_model.encode([current])[0]
     vec_B = embedding_model.encode([desired])[0]
-    transition_vec = vec_B - vec_A
+    
+    # Calculate weighted transition vector
+    if weight <= 0:
+        # All weight on current emotion
+        transition_vec = vec_A
+    elif weight >= 1:
+        # All weight on desired emotion
+        transition_vec = vec_B
+    else:
+        # Weighted combination of the two
+        # This will create a vector that's between the current and desired emotions
+        # When weight is 0.5, this is equivalent to the previous implementation
+        transition_vec = (1 - weight) * vec_A + weight * vec_B
 
     # Compute similarity between transition vector and movie plots
     similarity_scores = cosine_similarity([transition_vec], movie_embeddings)[0]

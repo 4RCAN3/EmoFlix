@@ -15,6 +15,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const recommendationsSection = document.getElementById('recommendations');
     const recommendationResults = document.getElementById('recommendation-results');
 
+    // Update weight display percentages
+    const emotionWeight = document.getElementById('emotion-weight');
+    const currentWeightDisplay = document.getElementById('current-weight');
+    const desiredWeightDisplay = document.getElementById('desired-weight');
+
+    if (emotionWeight) {
+        emotionWeight.addEventListener('input', function() {
+            const desiredPercent = this.value;
+            const currentPercent = 100 - desiredPercent;
+            currentWeightDisplay.textContent = `${currentPercent}%`;
+            desiredWeightDisplay.textContent = `${desiredPercent}%`;
+        });
+    }
+
     if (recommendationForm) {
         recommendationForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -22,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const currentEmotion = document.getElementById('current-emotion').value.trim();
             const desiredEmotion = document.getElementById('desired-emotion').value.trim();
             const movieCount = document.getElementById('movie-count').value;
+            const emotionWeight = document.getElementById('emotion-weight').value / 100; // Convert to 0-1 range
             
             if (!currentEmotion || !desiredEmotion) {
                 alert('Please describe both your current and desired emotional states.');
@@ -44,7 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({
                     current_emotion: currentEmotion,
                     desired_emotion: desiredEmotion,
-                    top_k: movieCount
+                    top_k: movieCount,
+                    weight: emotionWeight
                 })
             })
             .then(response => response.json())

@@ -53,6 +53,17 @@
                         <label for="movie-count">Number of recommendations:</label>
                         <input type="number" id="movie-count" min="1" max="10" value="5">
                     </div>
+                    <div class="form-group">
+                        <label for="emotion-weight">Balance between current and desired emotions:</label>
+                        <div class="weight-slider-container">
+                            <span>Current</span>
+                            <input type="range" id="emotion-weight" min="0" max="100" value="50" class="weight-slider">
+                            <span>Desired</span>
+                        </div>
+                        <div class="weight-display">
+                            <span id="current-weight">50%</span> current - <span id="desired-weight">50%</span> desired
+                        </div>
+                    </div>
                     <button type="submit" class="submit-button">Get Movie Recommendations</button>
                 </form>
             </div>
