@@ -12,7 +12,7 @@ Built using Next.js, Tailwind CSS, and powered by a Python Flask backend for emo
 
 ## Tech Stack
 
-* Frontend: Next.js, React, Tailwind CSS
+* Frontend: Javascript, CSS, HTML
 * Backend: Python Flask
 * API Communication: Fetch API (REST)
 
@@ -24,38 +24,18 @@ git clone https://github.com/4RCAN3/EmoFlix
 cd EmoFlix
 ```
 
-2. Install Frontend Dependencies
+2. Install Dependencies
 
 ```bash
-npm install
-# or
-yarn install
+pip install -r requirements.txt
 ```
 
-3. Start the Frontend Server
-```bash
-npm run dev
-# or
-yarn dev
-```
-By default, it runs on `http://localhost:3000`.
-
-4. Backend Setup (Flask Server)
-
-* Make sure you have Python 3.x installed
-* Install required Python libraries:
-
-```bash
-pip install flask flask-cors
-```
-
-* Navigate to your backend folder and run:
-
+3. Start the Server
 ```bash
 python main.py
 ```
 
-Your backend should now run on `http://localhost:5000`.
+Your app should now run on `http://localhost:5000`.
 
 ## Usage
 1. Enter your current emotion (e.g., "sad", "happy").
